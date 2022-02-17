@@ -12,6 +12,7 @@ int main(int argc, char *argv[]){
 	//Booleanos para cambiar de ventana
 	bool conf=false;
 	bool menu=true;
+	bool fondo=false;
 	
 	//Carga la musica y la reproduce.
 	sf::Music musica;
@@ -19,8 +20,11 @@ int main(int argc, char *argv[]){
 	musica.setLoop(true);
 	musica.play();
 	
-	Texture tmenu, tplay, tconf, tconf_mus, ttick, ticono1, ticono2;
-	Sprite smenu, splay, sconf, sconf_mus, stick, sicono1, sicono2;
+	Texture tmenu, tplay, tconf, tconf_mus, ttick, ticono1, ticono2, tfondo;
+	Sprite smenu, splay, sconf, sconf_mus, stick, sicono1, sicono2, sfondo;
+	
+	Sprite cartas[40];
+	
 	
 	tmenu.loadFromFile("menu.png");
 	tplay.loadFromFile("play.png");
@@ -29,6 +33,8 @@ int main(int argc, char *argv[]){
 	ttick.loadFromFile("tick.png");
 	ticono1.loadFromFile("icono1.png");
 	ticono2.loadFromFile("icono1.png");
+	tfondo.loadFromFile("fondo.png");
+	
 	smenu.setTexture(tmenu);
 	splay.setTexture(tplay);
 	sconf.setTexture(tconf);
@@ -36,6 +42,8 @@ int main(int argc, char *argv[]){
 	stick.setTexture(ttick);
 	sicono1.setTexture(ticono1);
 	sicono2.setTexture(ticono2);
+	sfondo.setTexture(tfondo);
+	
 	smenu.setPosition(0,0);
 	splay.setPosition(800,480);
 	sconf.setPosition(1310,0);
@@ -43,6 +51,10 @@ int main(int argc, char *argv[]){
 	stick.setPosition(385,420);
 	sicono1.setPosition(350,380);
 	sicono2.setPosition(1040,380);
+	sfondo.setPosition(0,0);
+	
+	
+	
 	while(w.isOpen()) {
 		Event e;
 		while(w.pollEvent(e)) {
@@ -73,9 +85,16 @@ int main(int argc, char *argv[]){
 					//Cada booleano hace que se muestre una imagen o otra
 					conf=true;
 					menu=false;
-					
+				}
+				
+				if (splay.getGlobalBounds().contains(posicion_mouse.x, posicion_mouse.y))
+				{
+					fondo=true;
+					menu=false;
 					
 				}
+				
+				
 				
 			}
 			if (Keyboard::isKeyPressed(Keyboard::Escape)) //Si pulsa la tecla "escape" dentro de la configuración de la musica, volverá al menú
@@ -83,6 +102,8 @@ int main(int argc, char *argv[]){
 				conf=false;
 				menu=true;
 			}
+			
+			
 			
 			
 		}
@@ -97,6 +118,13 @@ int main(int argc, char *argv[]){
 			w.draw(sicono2);
 			w.draw(stick);
 		}
+		
+		if (fondo == true) //inicia juego
+		{
+			
+			w.draw(sfondo);
+		}
+		
 		if (menu == true) //Muestra los sprites del menú
 		{
 			w.draw(smenu);
@@ -108,4 +136,4 @@ int main(int argc, char *argv[]){
 	}
 	return 0;
 }
-
+	
